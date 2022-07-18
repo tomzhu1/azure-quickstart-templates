@@ -38,7 +38,7 @@ param platformType string = 'AKS-HCI'
 @description('The name of the control plane interface on the access network. In 5G networks this is called the N2 interface whereas in 4G networks this is called the S1-MME interface. This should match one of the interfaces configured on your Azure Stack Edge machine.')
 param controlPlaneAccessInterfaceName string = ''
 
-@description('The IP address of the control plane interface on the access network. In 5G networks this is called the N2 interface whereas in 4G networks this is called the S1-MME interface.')
+@description('The IP address of the control plane interface on the access network. In 5G networks this is called the N2 interface whereas in 4G networks this is called the S1-MME interface. Not required for AKS-HCI.')
 param controlPlaneAccessIpAddress string = ''
 
 @description('The network address of the control plane access subnet in CIDR notation.')

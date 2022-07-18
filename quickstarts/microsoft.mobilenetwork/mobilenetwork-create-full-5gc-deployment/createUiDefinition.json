@@ -1,0 +1,293 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json#",
+    "handler": "Microsoft.Azure.CreateUIDef",
+    "version": "0.1.2-preview",
+    "parameters": {
+        "basics": [
+            {
+                "name": "mobileNetworkName",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Mobile Network Name",
+                "visible": true,
+                "toolTip": "The name for the private mobile network",
+				"constraints":{
+					"required": true
+				}
+            },
+            {
+                "name": "mobileCountryCode",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Mobile Country Code",
+                "defaultValue": "001",
+                "visible": true,
+                "toolTip": "The mobile country code for the private mobile network"
+            },
+            {
+                "name": "mobileNetworkCode",
+                "type": "Microsoft.Common.TextBox",
+                "label": "mobileNetworkCode",
+                "defaultValue": "01",
+                "visible": true,
+                "toolTip": "The mobile network code for the private mobile network"
+            },
+            {
+                "name": "siteName",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Site Name",
+                "defaultValue": "myExampleSite",
+                "visible": true,
+                "toolTip": "The name for the site"
+            },
+            {
+                "name": "serviceName",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Service Name",
+                "defaultValue": "Allow-all-traffic",
+                "visible": true,
+                "toolTip": "The name of the service"
+            },
+            {
+                "name": "simPolicyName",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Sim Policy Name",
+                "defaultValue": "Default-policy",
+                "visible": true,
+                "toolTip": "The name of the SIM policy"
+            },
+            {
+                "name": "sliceName",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Slice Name",
+                "defaultValue": "slice-1",
+                "visible": true,
+                "toolTip": "The name of the slice"
+            },
+            {
+                "name": "simGroupName",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Sim Group Name",
+                "defaultValue": "",
+                "visible": true,
+                "toolTip": "The name for the SIM group."
+            },
+            {
+                "name": "simResources",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Sim Resources",
+                "defaultValue": "[]",
+                "visible": true,
+				"toolTip": "An array containing properties of the SIM(s) you wish to create. See [Provision proxy SIM(s)](https://docs.microsoft.com/en-gb/azure/private-5g-core/provision-sims-azure-portal) for a full description of the required properties and their format."
+            },
+            {
+                "name": "platformType",
+                "type": "Microsoft.Common.DropDown",
+                "label": "Platform Type",
+                "defaultValue": "AKS-HCI",
+                "toolTip": "The platform type where packet core is deployed.",
+                "constraints": {
+                    "allowedValues": [
+                        {
+                            "label": "AKS-HCI",
+                            "value": "AKS-HCI"
+                        },
+                        {
+                            "label": "BaseVM",
+                            "value": "BaseVM"
+                        }
+                    ],
+                    "required": true
+                },
+                "visible": true
+            },
+            {
+                "name": "controlPlaneAccessInterfaceName",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Control Plane Access Interface Name",
+                "defaultValue": "",
+                "visible": true,
+                "toolTip": "The name of the control plane interface on the access network. In 5G networks this is called the N2 interface whereas in 4G networks this is called the S1-MME interface. This should match one of the interfaces configured on your Azure Stack Edge machine."
+            },
+            {
+                "name": "controlPlaneAccessIpAddress",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Control Plane Access IP Address",
+                "defaultValue": "",
+				"visible": true,
+                "toolTip": "The IP address of the control plane interface on the access network. In 5G networks this is called the N2 interface whereas in 4G networks this is called the S1-MME interface. Not required for AKS-HCI."
+            },
+            {
+                "name": "controlPlaneAccessSubnet",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Control Plane Access Subnet",
+                "defaultValue": "",
+                "visible": true,
+                "toolTip": "The network address of the control plane access subnet in CIDR notation."
+            },
+            {
+                "name": "controlPlaneAccessGateway",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Control Plane Access Gateway",
+                "defaultValue": "",
+                "visible": true,
+                "toolTip": "The control plane access subnet default gateway"
+            },
+            {
+                "name": "userPlaneAccessInterfaceName",
+                "type": "Microsoft.Common.TextBox",
+                "label": "User Plane Access Interface Name",
+                "defaultValue": "",
+                "visible": true,
+                "toolTip": "The logical name of the user plane interface on the access network. In 5G networks this is called the N3 interface whereas in 4G networks this is called the S1-U interface. This should match one of the interfaces configured on your Azure Stack Edge machine."
+            },
+            {
+                "name": "userPlaneAccessInterfaceIpAddress",
+                "type": "Microsoft.Common.TextBox",
+                "label": "User Plane Access Interface IP Address",
+                "defaultValue": "",
+				"visible": "[equals(basics('platformType'), 'BaseVM')]",
+                "toolTip": "The IP address of the user plane interface on the access network. In 5G networks this is called the N3 interface whereas in 4G networks this is called the S1-U interface. Not required for AKS-HCI."
+            },
+            {
+                "name": "userPlaneAccessSubnet",
+                "type": "Microsoft.Common.TextBox",
+                "label": "User Plane Access Subnet",
+                "defaultValue": "",
+                "visible": true,
+                "toolTip": "The network address of the data plane access subnet in CIDR notation"
+            },
+            {
+                "name": "userPlaneAccessGateway",
+                "type": "Microsoft.Common.TextBox",
+                "label": "User Plane Access Gateway",
+                "defaultValue": "",
+                "visible": true,
+                "toolTip": "The data plane access subnet default gateway"
+            },
+            {
+                "name": "userPlaneDataInterfaceName",
+                "type": "Microsoft.Common.TextBox",
+                "label": "User Plane Data Interface Name",
+                "defaultValue": "",
+                "visible": true,
+                "toolTip": "The logical name of the user plane interface on the data network. In 5G networks this is called the N6 interface whereas in 4G networks this is called the SGi interface. This should match one of the interfaces configured on your Azure Stack Edge machine."
+            },
+            {
+                "name": "userPlaneDataInterfaceIpAddress",
+                "type": "Microsoft.Common.TextBox",
+                "label": "User Plane Data Interface IP Address",
+                "defaultValue": "",
+				"visible": "[equals(basics('platformType'), 'BaseVM')]",
+                "toolTip": "The IP address of the user plane interface on the data network. In 5G networks this is called the N6 interface whereas in 4G networks this is called the SGi interface."
+            },
+            {
+                "name": "userPlaneDataInterfaceSubnet",
+                "type": "Microsoft.Common.TextBox",
+                "label": "User Plane Data Interface Subnet",
+                "defaultValue": "",
+                "visible": true,
+                "toolTip": "The network address of the data subnet in CIDR notation"
+            },
+            {
+                "name": "userPlaneDataInterfaceGateway",
+                "type": "Microsoft.Common.TextBox",
+                "label": "User Plane Data Interface Gateway",
+                "defaultValue": "",
+                "visible": true,
+                "toolTip": "The data subnet default gateway"
+            },
+            {
+                "name": "userEquipmentAddressPoolPrefix",
+                "type": "Microsoft.Common.TextBox",
+                "label": "User Equipment Address Pool Prefix",
+                "defaultValue": "",
+                "visible": true,
+                "toolTip": "The network address of the subnet from which dynamic IP addresses must be allocated to UEs, given in CIDR notation. Optional if userEquipmentStaticAddressPoolPrefix is specified. If both are specified, they must be the same size and not overlap."
+            },
+            {
+                "name": "userEquipmentStaticAddressPoolPrefix",
+                "type": "Microsoft.Common.TextBox",
+                "label": "User Equipment Static Address Pool Prefix",
+                "defaultValue": "",
+                "visible": true,
+                "toolTip": "The network address of the subnet from which static IP addresses must be allocated to UEs, given in CIDR notation. Optional if userEquipmentAddressPoolPrefix is specified. If both are specified, they must be the same size and not overlap."
+            },
+            {
+                "name": "dataNetworkName",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Data Network Name",
+                "defaultValue": "internet",
+                "visible": true,
+                "toolTip": "The name of the data network"
+            },
+            {
+                "name": "coreNetworkTechnology",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Core Network Technology",
+                "defaultValue": "5GC",
+                "visible": true,
+                "toolTip": "The mode in which the packet core instance will run"
+            },
+            {
+                "name": "naptEnabled",
+                "type": "Microsoft.Common.DropDown",
+                "label": "NAPT Enabled",
+                "defaultValue": "Enabled",
+                "toolTip": "Whether or not Network Address and Port Translation (NAPT) should be enabled for this data network",
+                "constraints": {
+                    "allowedValues": [
+                        {
+                            "label": "Enabled",
+                            "value": "Enabled"
+                        },
+                        {
+                            "label": "Disabled",
+                            "value": "Disabled"
+                        }
+                    ],
+                    "required": true
+                },
+                "visible": true
+            },
+            {
+                "name": "customLocation",
+                "type": "Microsoft.Common.TextBox",
+                "label": "customLocation",
+                "defaultValue": "",
+                "visible": true,
+                "toolTip": "The resource ID of the customLocation representing the ASE device where the packet core will be deployed. If this parameter is not specified then the 5G core will be created but will not be deployed to an ASE. [Collect custom location information](https://docs.microsoft.com/en-gb/azure/private-5g-core/collect-required-information-for-a-site#collect-custom-location-information) explains which value to specify here."
+            }
+        ],
+        "steps": [],
+        "outputs": {
+            "location": "[location()]",
+            "mobileNetworkName": "[basics('mobileNetworkName')]",
+            "mobileCountryCode": "[basics('mobileCountryCode')]",
+            "mobileNetworkCode": "[basics('mobileNetworkCode')]",
+            "siteName": "[basics('siteName')]",
+            "serviceName": "[basics('serviceName')]",
+            "simPolicyName": "[basics('simPolicyName')]",
+            "sliceName": "[basics('sliceName')]",
+            "simGroupName": "[basics('simGroupName')]",
+            "simResources": "[basics('simResources')]",
+            "platformType": "[basics('platformType')]",
+            "controlPlaneAccessInterfaceName": "[basics('controlPlaneAccessInterfaceName')]",
+            "controlPlaneAccessIpAddress": "[basics('controlPlaneAccessIpAddress')]",
+            "controlPlaneAccessSubnet": "[basics('controlPlaneAccessSubnet')]",
+            "controlPlaneAccessGateway": "[basics('controlPlaneAccessGateway')]",
+            "userPlaneAccessInterfaceName": "[basics('userPlaneAccessInterfaceName')]",
+            "userPlaneAccessInterfaceIpAddress": "[basics('userPlaneAccessInterfaceIpAddress')]",
+            "userPlaneAccessSubnet": "[basics('userPlaneAccessSubnet')]",
+            "userPlaneAccessGateway": "[basics('userPlaneAccessGateway')]",
+            "userPlaneDataInterfaceName": "[basics('userPlaneDataInterfaceName')]",
+            "userPlaneDataInterfaceIpAddress": "[basics('userPlaneDataInterfaceIpAddress')]",
+            "userPlaneDataInterfaceSubnet": "[basics('userPlaneDataInterfaceSubnet')]",
+            "userPlaneDataInterfaceGateway": "[basics('userPlaneDataInterfaceGateway')]",
+            "userEquipmentAddressPoolPrefix": "[basics('userEquipmentAddressPoolPrefix')]",
+            "userEquipmentStaticAddressPoolPrefix": "[basics('userEquipmentStaticAddressPoolPrefix')]",
+            "dataNetworkName": "[basics('dataNetworkName')]",
+            "coreNetworkTechnology": "[basics('coreNetworkTechnology')]",
+            "naptEnabled": "[basics('naptEnabled')]",
+            "customLocation": "[basics('customLocation')]"
+        }
+    }
+}
